@@ -1,37 +1,74 @@
 package com.campany;
 public class SnakeAndLadder {
-     public static void main(String[] args) {
-     System.out.println( "Welcome To Snake And Ladder Simulator" );
-     int startPosition = 0;
-		int finalPosition = 100;
-		int count_dice_roll = 0;
-		System.out.println("stating position of player is " + startPosition);
-		while(startPosition != finalPosition)
-		{
-			int diceValue = (int) Math.floor((Math.random() * 10) %6) + 1;
-			int checkOption = (int) Math.floor((Math.random() * 10) %3);
-			switch(checkOption){
-				case 1:
-				startPosition += 0;
-				break;
-				case 2:
-				startPosition += diceValue;
-				break;
-				default:
-				startPosition -= diceValue;
-				}
-			System.out.println("dice value : " + diceValue + " || option value : " +checkOption);
-			if(startPosition < 0)
-			{
-				startPosition = 0;
-			}
-			else if(startPosition > 100)
-			{
-				startPosition -= diceValue;
-			}
-			System.out.println("Position of the player : " +startPosition);
-			count_dice_roll++;
-		}	
-		System.out.println("Number of times the dice was rolled to win the game is " +count_dice_roll);
-     }
+     public static final int IS_LADDER = 1;
+    public static final int IS_SNAKE = 2;
+    public static final int WINNING_POSITION = 100;
+
+    static int diceCount = 0;
+    static String turn = "player1";
+    public static void main(String[] args) {
+        int player1Position = 0;
+        int player2Position = 0;
+        int player1DiceCount = 0;
+        int player2DiceCount = 0;
+        while (player1Position < WINNING_POSITION && player2Position < WINNING_POSITION) {
+            diceCount++;
+            if (turn.equals("player1")) {
+                System.out.println("player1 current position : " + player1Position);
+                ++player1DiceCount;
+                player1Position = twoPlayers(player1Position);
+                System.out.println("player1 Position after die roll : " + player1Position);
+                turn = "player2";
+            } else {
+                System.out.println("player2 current position : " + player2Position);
+                ++player2DiceCount;
+                player2Position = twoPlayers(player2Position);
+                System.out.println("player2 Position after die roll : " + player2Position);
+                turn = "player1";
+            }
+        }
+        if (player1Position == WINNING_POSITION) {
+            System.out.println("Player1 win the game");
+        } else {
+            System.out.println("Player2 win the game");
+        }
+        System.out.println("dice count of player1 : " + player1DiceCount);
+        System.out.println("dice count of player2 : " + player2DiceCount);
+
+        System.out.println("No.of Times Roll Die is : " + diceCount);
+    }
+
+    public static int twoPlayers(int position) {
+        int diceNumber = (int) (Math.floor(Math.random() * 10) % 6 + 1);
+        System.out.println("DiceNumber is : " + diceNumber);
+
+        int option = (int) (Math.floor(Math.random() * 10) % 2 + 1);
+        switch (option) {
+            case IS_LADDER:
+                System.out.println("Ladder for the Player");
+                position = position + diceNumber;
+                if (turn.equals("player1")) {
+                    turn = "player1";
+                } else if (turn.equals("player2")) {
+                    turn = "player2";
+                }
+                if (position > WINNING_POSITION) {
+                    System.out.println("No play stay in the Current Position");
+                    position = position - diceNumber;
+                }
+                break;
+            case IS_SNAKE:
+                System.out.println("Snake for the player");
+                position = position - diceNumber;
+                if (position < 0) {
+                    position = 0;
+                }
+                break;
+            default:
+                System.out.println("No Play for the Player");
+                position = position;
+                break;
+        }
+        return position;
+    }
 }
