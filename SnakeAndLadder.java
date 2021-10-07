@@ -5,7 +5,7 @@ public class SnakeAndLadder {
      int startPosition = 0;
 		int finalPosition = 100;
 		System.out.println("stating position of player is " + startPosition);
-		while(startPosition <= finalPosition)
+		while(startPosition != finalPosition)
 		{
 			int diceValue = (int) Math.floor((Math.random() * 10) %6) + 1;
 			System.out.println("dice value is " + diceValue);
@@ -19,13 +19,16 @@ public class SnakeAndLadder {
 				break;
 				default:
 				startPosition -= diceValue;
-			}
-			if(startPosition < 0){
-			startPosition = 0;
-			}
+				}
 			System.out.println("option value is " +checkOption);
-		
-			
+			if(startPosition < 0)
+			{
+				startPosition = 0;
+			}
+			else if(startPosition > 100)
+			{
+				startPosition -= diceValue;
+			}
 			System.out.println("Position of the player is at " +startPosition);
 		}
      }
